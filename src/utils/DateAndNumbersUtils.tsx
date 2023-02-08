@@ -16,6 +16,7 @@ export function makeDayCount (dayOfRegister: string): string {
   function dateDiffInDaysFromString(dateTo: Date, dateFrom: string): string {
     try {
         var dateFromString = dateSpliter(dateFrom)
+        if (dateFromString !instanceof Date) { return '{Нет данных}'}
         let difInTime = dateTo.getTime() - dateFromString.getTime()
         let difInDays = difInTime / (1000 * 3600 * 24) 
         return String(Math.round(difInDays))
