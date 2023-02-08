@@ -1,0 +1,16 @@
+body {
+    font-family: sans-serif;
+    height: 100%;
+  }
+  
+  .tasks ul {
+    margin: 10px 0;
+  }
+  
+  .tasks ol {
+    padding: 0 20px;
+  }
+  
+  .tasks ol li:not(:last-of-type) {
+    margin-bottom: 5px;
+  }
