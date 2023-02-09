@@ -1,5 +1,5 @@
 import { returnTasks } from "./utils.tsx";
-import "./styles.css";
+import "./styles.scss";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CardPage from "./modules/CardPage.tsx";

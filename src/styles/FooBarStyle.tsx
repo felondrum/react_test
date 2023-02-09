@@ -15,3 +15,11 @@ export const FooStyle = {
     color: Colors.ColorSchema.textFont,
     heigh: '100vh'
 }
+
+export const MainPageBarStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: Colors.ColorSchema.subFont,
+    color: Colors.ColorSchema.textFont,
+    marginTop: '0px'
+}
