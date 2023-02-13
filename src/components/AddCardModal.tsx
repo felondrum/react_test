@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FC } from "react";
+import React, { useEffect, useState, FC, useRef } from "react";
 import { Product } from "../components/Product.tsx";
 
 type AddCardModalType = {
@@ -11,6 +11,9 @@ const AddCardModal: FC<AddCardModalType> =
 ({ isShown, onClose, onAdd} :AddCardModalType) => {
 
     const [showState, setShowState] = useState(isShown)
+    const inputNameRef = useRef<HTMLInputElement>(null);
+    const inputDateRef = useRef<HTMLInputElement>(null);
+    const inputUserRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {console.log("Modal. Следим за состоянием отображения. Текущий стэйт: " + showState)},
     [showState]) 
@@ -23,10 +26,40 @@ const AddCardModal: FC<AddCardModalType> =
     }
 
     const onAddInner = () => {
-        onAdd(productStub)
+        onAdd(getInputProduct())
         onCloseInner()
     }
     
+
+    const getName = (): string => {
+        let name = inputNameRef.current?.value
+        console.log(name)
+        return String(name)
+    }
+
+    const getDate = (): string => {
+        let date = inputDateRef.current?.value
+        console.log(date)
+        return String(date)
+    }
+
+
+    const getUsersCount = (): number => {
+        let users = inputUserRef.current?.value
+        console.log(users)
+        return Number(users)
+    }
+
+    const getInputProduct = (): Product => {
+        let result: Product = {
+            name: getName(),
+            dateOfAdding: getDate(),
+            usersCount: getUsersCount()
+        }
+        console.log("product name: " + result.name + "; product date: " + result.dateOfAdding + "; product users: " + result.usersCount)
+        return result
+    }
+
     const renderModal = () => {
         console.log("Modal. Рендер, showState=" + showState)
         if (showState) {
@@ -36,9 +69,9 @@ const AddCardModal: FC<AddCardModalType> =
                 <h2>Добавить продукт</h2>
                 <div className="content">
                     <div>
-                        <input></input>
-                        <input></input>
-                        <input></input>
+                        <input ref={inputNameRef}></input>
+                        <input ref={inputDateRef}></input>
+                        <input ref={inputUserRef}></input>
                     </div>
                 </div>
                 <div className="action">
