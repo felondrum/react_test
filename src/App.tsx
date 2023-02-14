@@ -1,12 +1,14 @@
 import { returnTasks } from "./utils.tsx";
 import "./styles.scss";
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CardPage from "./modules/CardPage.tsx";
 import HomePage from "./modules/HomePage.tsx";
 import Navbar from "./components/Navbar.tsx"
+import { Products } from "./components/Product.js";
 
 export default function App() {
+  useEffect(() => {console.log("App rendered")}, [])
     return (
         <Router>
           <Navbar/>
@@ -42,3 +44,7 @@ export const products = [
     usersCount: 24903
   }
 ];
+
+export const productsTp: Products = {
+  products: products
+}

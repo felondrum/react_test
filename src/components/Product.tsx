@@ -5,3 +5,8 @@ export type Product = {
     dateOfAdding: string,
     usersCount: number
 }
+
+
+export type Products = {
+    products: Product[]
+}
