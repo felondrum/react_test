@@ -3,43 +3,38 @@ import React, { FC, useEffect, useState } from "react";
 import CardStack from "../components/CardStack.tsx";
 import * as FooNavStyle from '../styles/FooBarStyle.tsx'
 import IPage from "./IPage.tsx"
-import { products, usersCount, productsTp } from "../App.tsx"
+import { usersCount } from "../App.tsx"
 import AddCardModal from "../components/AddCardModal.tsx";
 import { Product, Products } from "../components/Product.js";
+import { CardPageManipulateContext, context } from "../components/Context.tsx"
 
-const CardPage: FC<IPage> = ({}: IPage) => {
+const CardPage: FC<IPage | CardPageManipulateContext> = ({}: IPage) => {
     const [productsState, setProductsState] = useState<Product[]>([])
     const [modalIsShown, setModalIsShown] = useState(false)
 
-    const addProduct = (newProduct) => {
+    const addProduct = (newProduct: Product) => {
         let newProducts = [...productsState, newProduct]
-        setProductsState(newProducts)
+        addProducts(newProducts)
     }
 
     const addProducts = (newProducts) => {
-        console.log("Alarm" + newProducts)
         setProductsState(newProducts)
     }
 
-    const deleteProduct = (deleteIndex) => {
+    const deleteProduct = (deleteIndex: string) => {
         const productNewState = productsState
         setProductsState(filerProducts(deleteIndex, productNewState))
     }
 
     const openModal = () => {
         let modalTmp = !modalIsShown
-        console.log("CardPage. Изменили статутс modalShown. Было:" + modalIsShown)
         setModalIsShown(modalTmp)
     }
 
-    useEffect(() => { console.log("CardPage some changes!") })
     useEffect(() => { 
-
-        // async () => {
-            console.log("Fetch start")
             const requestParam = 
                 {
-                    param: "1"
+                    param: Math.round(Math.random() * 100)
                 }
             
             const requestOptions = {
@@ -50,32 +45,26 @@ const CardPage: FC<IPage> = ({}: IPage) => {
             
             const url = "http://localhost:8787/react/products/get"
             const res =  getProductsApi(url, requestOptions).then((r: Products | any) => {
-                console.log(r)
                 addProducts(r.products)
             })
-            // console.log(res)
-            // addProducts(res.products)
-        // }
 
     }, [] )
-    useEffect(() => { return () => {console.log("CardPage will unmounted")} }, [] )
-    useEffect(() => {console.log("CardPage. ModalIsShown: " + modalIsShown)}, [modalIsShown])
 
     return (
        <>
-        <div style={FooNavStyle.NavStyle}>
-            <button 
-             style={{cursor: 'pointer'}}
-             onClick={openModal}
-              >Добавить карточку</button>
-        </div>
-        <AddCardModal
-            onAdd={addProduct}
-            onClose={openModal}
-            isShown={modalIsShown}
-        /> 
-        <CardStack products={productsState} usersCount={usersCount} onDelete={deleteProduct}/> 
-        <div style={FooNavStyle.FooStyle}>FOO</div>
+       <context.Provider value={{addProduct, openModal, deleteProduct}}>
+            <div style={FooNavStyle.NavStyle}>
+                <button 
+                style={{cursor: 'pointer'}}
+                onClick={openModal}
+                >Добавить карточку</button>
+            </div>
+            <AddCardModal
+                isShown={modalIsShown}
+            /> 
+            <CardStack products={productsState} usersCount={usersCount}/> 
+            <div style={FooNavStyle.FooStyle}>FOO</div>
+        </context.Provider>
        </> 
     )
 }

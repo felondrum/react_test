@@ -1,52 +1,50 @@
 import React, { useEffect, useState, FC, useRef } from "react";
 import { Product } from "../components/Product.tsx";
+import {containsOnlyNumbers} from "../utils/DateAndNumbersUtils.tsx"
+import {context, CardPageManipulateContext } from "../components/Context.tsx"
 
 type AddCardModalType = {
     isShown: boolean
-    onClose(): void
-    onAdd(product: Product): void
 }
 
 const AddCardModal: FC<AddCardModalType> = 
-({ isShown, onClose, onAdd} :AddCardModalType) => {
+({ isShown } :AddCardModalType) => {
+
+    const { addProduct, openModal } = React.useContext(context) as CardPageManipulateContext
 
     const [showState, setShowState] = useState(isShown)
     const inputNameRef = useRef<HTMLInputElement>(null);
     const inputDateRef = useRef<HTMLInputElement>(null);
     const inputUserRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {console.log("Modal. Следим за состоянием отображения. Текущий стэйт: " + showState)},
-    [showState]) 
-
     useEffect(() => {setShowState(isShown)}, [isShown])
    
     const onCloseInner = () => {
         setShowState(false)
-        onClose()
+        openModal()
     }
 
     const onAddInner = () => {
-        onAdd(getInputProduct())
+        addProduct(getInputProduct())
         onCloseInner()
     }
     
 
     const getName = (): string => {
         let name = inputNameRef.current?.value
-        console.log(name)
+        if (name === '' || name === undefined) name = 'Не указано'
         return String(name)
     }
 
     const getDate = (): string => {
         let date = inputDateRef.current?.value
-        console.log(date)
         return String(date)
     }
 
 
     const getUsersCount = (): number => {
         let users = inputUserRef.current?.value
-        console.log(users)
+        if (!containsOnlyNumbers(users)) users = "0"
         return Number(users)
     }
 
@@ -56,12 +54,10 @@ const AddCardModal: FC<AddCardModalType> =
             dateOfAdding: getDate(),
             usersCount: getUsersCount()
         }
-        console.log("product name: " + result.name + "; product date: " + result.dateOfAdding + "; product users: " + result.usersCount)
         return result
     }
 
     const renderModal = () => {
-        console.log("Modal. Рендер, showState=" + showState)
         if (showState) {
             return (
             <>
@@ -86,11 +82,5 @@ const AddCardModal: FC<AddCardModalType> =
 
     return (renderModal())
 }
-
-const productStub: Product = {
-    name: "STUB",
-    dateOfAdding: "10.02.2022",
-    usersCount: 1
-  }
 
 export default AddCardModal

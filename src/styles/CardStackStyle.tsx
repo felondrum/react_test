@@ -15,7 +15,7 @@ export const globalStyle = {
     display: 'flex',
     flexWrap: 'wrap',
     // justifyContent: 'space-between',
-    gap: '20px',
+    gap: '40px',
     boxSizing: 'border-box'
 }
 

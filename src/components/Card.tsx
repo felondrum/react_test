@@ -1,25 +1,25 @@
 import React, { FC } from "react";
 import * as CardStyle from '../styles/CardStyle.tsx'
-import { Product } from "./Product.js";
+import {context, CardPageManipulateContext } from "../components/Context.tsx"
 
 export type CardProps = {
     name: string;
     daysActive: string;
     usersActivity: string;
     deleteIndex: string;
-    onDelete(deleteIndex: string)
 }
 
 export const Card: FC<CardProps> = ({
     name,
     daysActive,
     usersActivity,
-    deleteIndex,
-    onDelete
+    deleteIndex
 }: CardProps) => {
     
+    const { deleteProduct } = React.useContext(context) as CardPageManipulateContext
+
     const onDeleteClick = () => {
-        onDelete(deleteIndex)
+        deleteProduct(deleteIndex)
     }
 
     return (

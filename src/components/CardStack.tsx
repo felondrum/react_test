@@ -4,17 +4,14 @@ import { makeDayCount, makeProc } from '../utils/DateAndNumbersUtils.tsx'
 import * as CardStackStyle from '../styles/CardStackStyle.tsx'
 import { Product } from "../components/Product.tsx"
 
+
 type CardStackProps = {
   products: Product[],
-  usersCount: number,
-  onDelete(deleteIndex: string)
+  usersCount: number
 }
 
-const CardStack: FC<CardStackProps> = ({products, usersCount, onDelete}: CardStackProps) => {
-  const [prodState, setProductsState] = useState<Product[]>(products)
-  React.useEffect(() => {"CardStack was mount"}, []) //doesn't work???
-  React.useEffect(() => {"CardStack changed!"}) //doesn't work???
-  React.useEffect(() => {console.log("CardStack state is changed!")}, [prodState]) 
+const CardStack: FC<CardStackProps> = ({products, usersCount}: CardStackProps) => {
+  
   return (
     <>
     <div style={CardStackStyle.bigStyle}>
@@ -27,7 +24,6 @@ const CardStack: FC<CardStackProps> = ({products, usersCount, onDelete}: CardSta
             daysActive={makeDayCount(p.dateOfAdding)}
             usersActivity={makeProc(p.usersCount, usersCount)}
             deleteIndex={p.name}
-            onDelete={onDelete}
           />
           ))
         }
